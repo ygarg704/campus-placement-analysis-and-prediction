@@ -1,0 +1,502 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "import pandas as pd"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Unnamed: 0</th>\n",
+       "      <th>gender</th>\n",
+       "      <th>10th p</th>\n",
+       "      <th>10th b</th>\n",
+       "      <th>12th p</th>\n",
+       "      <th>12th b</th>\n",
+       "      <th>stream</th>\n",
+       "      <th>ug p</th>\n",
+       "      <th>ug t</th>\n",
+       "      <th>work exp</th>\n",
+       "      <th>pg t</th>\n",
+       "      <th>pg p</th>\n",
+       "      <th>status</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>0</td>\n",
+       "      <td>M</td>\n",
+       "      <td>67.00</td>\n",
+       "      <td>Others</td>\n",
+       "      <td>91.00</td>\n",
+       "      <td>Others</td>\n",
+       "      <td>Commerce</td>\n",
+       "      <td>58.00</td>\n",
+       "      <td>Sci&amp;Tech</td>\n",
+       "      <td>No</td>\n",
+       "      <td>Mkt&amp;HR</td>\n",
+       "      <td>58.80</td>\n",
+       "      <td>Placed</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>1</td>\n",
+       "      <td>M</td>\n",
+       "      <td>79.33</td>\n",
+       "      <td>Central</td>\n",
+       "      <td>78.33</td>\n",
+       "      <td>Others</td>\n",
+       "      <td>Science</td>\n",
+       "      <td>77.48</td>\n",
+       "      <td>Sci&amp;Tech</td>\n",
+       "      <td>Yes</td>\n",
+       "      <td>Mkt&amp;Fin</td>\n",
+       "      <td>66.28</td>\n",
+       "      <td>Placed</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2</td>\n",
+       "      <td>M</td>\n",
+       "      <td>65.00</td>\n",
+       "      <td>Central</td>\n",
+       "      <td>68.00</td>\n",
+       "      <td>Central</td>\n",
+       "      <td>Arts</td>\n",
+       "      <td>64.00</td>\n",
+       "      <td>Comm&amp;Mgmt</td>\n",
+       "      <td>No</td>\n",
+       "      <td>Mkt&amp;Fin</td>\n",
+       "      <td>57.80</td>\n",
+       "      <td>Placed</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>3</td>\n",
+       "      <td>M</td>\n",
+       "      <td>56.00</td>\n",
+       "      <td>Central</td>\n",
+       "      <td>52.00</td>\n",
+       "      <td>Central</td>\n",
+       "      <td>Science</td>\n",
+       "      <td>52.00</td>\n",
+       "      <td>Sci&amp;Tech</td>\n",
+       "      <td>No</td>\n",
+       "      <td>Mkt&amp;HR</td>\n",
+       "      <td>59.43</td>\n",
+       "      <td>Not Placed</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>4</td>\n",
+       "      <td>M</td>\n",
+       "      <td>85.80</td>\n",
+       "      <td>Central</td>\n",
+       "      <td>73.60</td>\n",
+       "      <td>Central</td>\n",
+       "      <td>Commerce</td>\n",
+       "      <td>73.30</td>\n",
+       "      <td>Comm&amp;Mgmt</td>\n",
+       "      <td>No</td>\n",
+       "      <td>Mkt&amp;Fin</td>\n",
+       "      <td>55.50</td>\n",
+       "      <td>Placed</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Unnamed: 0 gender  10th p   10th b  12th p   12th b    stream   ug p  \\\n",
+       "0           0      M   67.00   Others   91.00   Others  Commerce  58.00   \n",
+       "1           1      M   79.33  Central   78.33   Others   Science  77.48   \n",
+       "2           2      M   65.00  Central   68.00  Central      Arts  64.00   \n",
+       "3           3      M   56.00  Central   52.00  Central   Science  52.00   \n",
+       "4           4      M   85.80  Central   73.60  Central  Commerce  73.30   \n",
+       "\n",
+       "        ug t work exp     pg t   pg p      status  \n",
+       "0   Sci&Tech       No   Mkt&HR  58.80      Placed  \n",
+       "1   Sci&Tech      Yes  Mkt&Fin  66.28      Placed  \n",
+       "2  Comm&Mgmt       No  Mkt&Fin  57.80      Placed  \n",
+       "3   Sci&Tech       No   Mkt&HR  59.43  Not Placed  \n",
+       "4  Comm&Mgmt       No  Mkt&Fin  55.50      Placed  "
+      ]
+     },
+     "execution_count": 35,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "ds = pd.read_csv('../dataset/placement_clean.csv')\n",
+    "ds.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 36,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "X = ds.iloc[:, 1:-1].values\n",
+    "y = ds.iloc[:, -1].values"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 37,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[['M' 67.0 'Others' ... 'No' 'Mkt&HR' 58.8]\n",
+      " ['M' 79.33 'Central' ... 'Yes' 'Mkt&Fin' 66.28]\n",
+      " ['M' 65.0 'Central' ... 'No' 'Mkt&Fin' 57.8]\n",
+      " ...\n",
+      " ['M' 67.0 'Others' ... 'Yes' 'Mkt&Fin' 69.72]\n",
+      " ['F' 74.0 'Others' ... 'No' 'Mkt&HR' 60.23]\n",
+      " ['M' 62.0 'Central' ... 'No' 'Mkt&HR' 60.22]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(X)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 38,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['Placed' 'Placed' 'Placed' 'Not Placed' 'Placed' 'Not Placed'\n",
+      " 'Not Placed' 'Placed' 'Placed' 'Not Placed' 'Placed' 'Placed'\n",
+      " 'Not Placed' 'Placed' 'Not Placed' 'Placed' 'Placed' 'Not Placed'\n",
+      " 'Not Placed' 'Placed' 'Placed' 'Placed' 'Placed' 'Placed' 'Placed'\n",
+      " 'Not Placed' 'Placed' 'Placed' 'Placed' 'Not Placed' 'Placed'\n",
+      " 'Not Placed' 'Placed' 'Placed' 'Not Placed' 'Placed' 'Not Placed'\n",
+      " 'Placed' 'Placed' 'Placed' 'Placed' 'Not Placed' 'Not Placed' 'Placed'\n",
+      " 'Placed' 'Not Placed' 'Not Placed' 'Placed' 'Placed' 'Not Placed'\n",
+      " 'Placed' 'Not Placed' 'Not Placed' 'Placed' 'Placed' 'Placed' 'Placed'\n",
+      " 'Placed' 'Placed' 'Placed' 'Placed' 'Placed' 'Placed' 'Not Placed'\n",
+      " 'Placed' 'Not Placed' 'Placed' 'Placed' 'Not Placed' 'Placed' 'Placed'\n",
+      " 'Placed' 'Placed' 'Placed' 'Placed' 'Not Placed' 'Placed' 'Placed'\n",
+      " 'Placed' 'Not Placed' 'Placed' 'Placed' 'Not Placed' 'Placed' 'Placed'\n",
+      " 'Placed' 'Placed' 'Not Placed' 'Placed' 'Placed' 'Placed' 'Not Placed'\n",
+      " 'Placed' 'Not Placed' 'Placed' 'Placed' 'Placed' 'Not Placed' 'Placed'\n",
+      " 'Not Placed' 'Not Placed' 'Placed' 'Placed' 'Placed' 'Placed'\n",
+      " 'Not Placed' 'Not Placed' 'Placed' 'Placed' 'Not Placed' 'Placed'\n",
+      " 'Not Placed' 'Placed' 'Placed' 'Placed' 'Placed' 'Placed' 'Placed'\n",
+      " 'Placed' 'Placed' 'Not Placed' 'Placed' 'Placed' 'Placed' 'Placed'\n",
+      " 'Placed' 'Placed' 'Placed' 'Placed' 'Placed' 'Not Placed' 'Placed'\n",
+      " 'Placed' 'Placed' 'Placed' 'Placed' 'Not Placed' 'Placed' 'Placed'\n",
+      " 'Placed' 'Placed' 'Not Placed' 'Placed' 'Placed' 'Not Placed' 'Placed'\n",
+      " 'Placed' 'Placed' 'Placed' 'Not Placed' 'Placed' 'Placed' 'Placed'\n",
+      " 'Placed' 'Placed' 'Not Placed' 'Placed' 'Placed' 'Not Placed'\n",
+      " 'Not Placed' 'Placed' 'Not Placed' 'Placed' 'Placed' 'Placed'\n",
+      " 'Not Placed' 'Placed' 'Not Placed' 'Not Placed' 'Not Placed' 'Not Placed'\n",
+      " 'Placed' 'Placed' 'Not Placed' 'Placed' 'Not Placed' 'Placed' 'Placed'\n",
+      " 'Placed' 'Not Placed' 'Placed' 'Not Placed' 'Not Placed' 'Placed'\n",
+      " 'Not Placed' 'Placed' 'Not Placed' 'Placed' 'Not Placed' 'Not Placed'\n",
+      " 'Not Placed' 'Placed' 'Placed' 'Placed' 'Not Placed' 'Placed' 'Placed'\n",
+      " 'Placed' 'Not Placed' 'Placed' 'Placed' 'Not Placed' 'Placed' 'Placed'\n",
+      " 'Placed' 'Placed' 'Not Placed' 'Placed' 'Not Placed' 'Placed' 'Placed'\n",
+      " 'Placed' 'Placed' 'Placed' 'Not Placed']\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(y)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.compose import ColumnTransformer\n",
+    "from sklearn.preprocessing import OneHotEncoder\n",
+    "ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [0, 2, 4, 5, 7, 8, 9])], remainder='passthrough')\n",
+    "X = np.array(ct.fit_transform(X))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[0.0 1.0 0.0 ... 91.0 58.0 58.8]\n",
+      " [0.0 1.0 1.0 ... 78.33 77.48 66.28]\n",
+      " [0.0 1.0 1.0 ... 68.0 64.0 57.8]\n",
+      " ...\n",
+      " [0.0 1.0 0.0 ... 67.0 73.0 69.72]\n",
+      " [1.0 0.0 0.0 ... 66.0 58.0 60.23]\n",
+      " [0.0 1.0 1.0 ... 58.0 53.0 60.22]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(X)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.preprocessing import LabelEncoder\n",
+    "le = LabelEncoder()\n",
+    "y = le.fit_transform(y)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[1 1 1 0 1 0 0 1 1 0 1 1 0 1 0 1 1 0 0 1 1 1 1 1 1 0 1 1 1 0 1 0 1 1 0 1 0\n",
+      " 1 1 1 1 0 0 1 1 0 0 1 1 0 1 0 0 1 1 1 1 1 1 1 1 1 1 0 1 0 1 1 0 1 1 1 1 1\n",
+      " 1 0 1 1 1 0 1 1 0 1 1 1 1 0 1 1 1 0 1 0 1 1 1 0 1 0 0 1 1 1 1 0 0 1 1 0 1\n",
+      " 0 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 0 1 1 1 1 0 1 1 0 1 1 1\n",
+      " 1 0 1 1 1 1 1 0 1 1 0 0 1 0 1 1 1 0 1 0 0 0 0 1 1 0 1 0 1 1 1 0 1 0 0 1 0\n",
+      " 1 0 1 0 0 0 1 1 1 0 1 1 1 0 1 1 0 1 1 1 1 0 1 0 1 1 1 1 1 0]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(y)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 43,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.model_selection import train_test_split\n",
+    "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 44,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.preprocessing import StandardScaler\n",
+    "sc = StandardScaler()\n",
+    "X_train = sc.fit_transform(X_train)\n",
+    "X_test = sc.transform(X_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 45,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[-0.76980036  0.76980036  0.9545214  ... -0.57006221 -1.30846321\n",
+      "  -1.31487558]\n",
+      " [-0.76980036  0.76980036  0.9545214  ... -0.29435751 -0.05053648\n",
+      "  -0.35062408]\n",
+      " [-0.76980036  0.76980036 -1.04764544 ...  0.07324875 -0.05053648\n",
+      "  -0.77031628]\n",
+      " ...\n",
+      " [-0.76980036  0.76980036 -1.04764544 ...  0.07324875  1.62669918\n",
+      "   1.1096273 ]\n",
+      " [-0.76980036  0.76980036  0.9545214  ... -0.12893469  0.43865726\n",
+      "  -0.90038618]\n",
+      " [ 1.29903811 -1.29903811  0.9545214  ...  0.90036285 -0.10644433\n",
+      "  -1.15532317]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(X_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 46,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "DecisionTreeClassifier(ccp_alpha=0.0, class_weight=None, criterion='entropy',\n",
+       "                       max_depth=None, max_features=None, max_leaf_nodes=None,\n",
+       "                       min_impurity_decrease=0.0, min_impurity_split=None,\n",
+       "                       min_samples_leaf=1, min_samples_split=2,\n",
+       "                       min_weight_fraction_leaf=0.0, presort='deprecated',\n",
+       "                       random_state=0, splitter='best')"
+      ]
+     },
+     "execution_count": 46,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from sklearn.tree import DecisionTreeClassifier\n",
+    "classifier = DecisionTreeClassifier(criterion = 'entropy', random_state = 0)\n",
+    "classifier.fit(X_train, y_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 47,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "y_pred = classifier.predict(X_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.762432915921288"
+      ]
+     },
+     "execution_count": 48,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from sklearn.metrics import precision_score\n",
+    "precision_score(y_test, y_pred, average='weighted')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.7631458357200139"
+      ]
+     },
+     "execution_count": 49,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from sklearn.metrics import f1_score\n",
+    "f1_score(y_test, y_pred, average='weighted')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 50,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.7674418604651163"
+      ]
+     },
+     "execution_count": 50,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from sklearn.metrics import recall_score\n",
+    "recall_score(y_test, y_pred, average='weighted')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
